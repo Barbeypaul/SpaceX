@@ -9,6 +9,8 @@ export class lunchList extends Component<launchesProps> {
     state = {
         search: '',
         success: null,
+        currentPage: 1,
+        todosPerPage: 20,
     }
     handleChange = (event: any) => {
         const value = event.target.value
@@ -16,7 +18,6 @@ export class lunchList extends Component<launchesProps> {
             search: value
         })
         console.log(this.state.search);
-
     }
     handleChangeSuccess = (event: any) => {
         const value = event.target.value
@@ -25,9 +26,27 @@ export class lunchList extends Component<launchesProps> {
         })
         console.log(this.state.success);
     }
+    handleClickPagination(event: any) {
+        // this.setState({
+        //     currentPage: Number(event.target.key)
+        // });
+        console.log(event.target.key);
+    }
     render() {
         const launches = this.props.launches
 
+        const indexOfLastTodo = this.state.currentPage * this.state.todosPerPage;
+        const indexOfFirstTodo = indexOfLastTodo - this.state.todosPerPage;
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(Object.keys(launches).length / this.state.todosPerPage); i++) {
+            pageNumbers.push(i);
+        }
+        const renderPageNumbers = pageNumbers.map(numberPage => {
+            console.log(numberPage);
+            return (
+                <li key={numberPage} value={numberPage} onClick={this.handleClickPagination} className="page-item"><a className="page-link" href="#">{numberPage}</a></li>
+            );
+        });
         return (
             <div>
                 <div className="row col-md-6">
@@ -44,7 +63,7 @@ export class lunchList extends Component<launchesProps> {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    {Object.keys(launches).filter((keylaunches) => {
+                    {Object.keys(launches).slice(indexOfFirstTodo, indexOfLastTodo).filter((keylaunches) => {
                         return launches[keylaunches].mission_name.toLocaleLowerCase().includes(this.state.search.toLocaleLowerCase())
                         // Boolean(launches[keylaunches].launch_success.includes(this.state.success))
                     }).map(keylaunches => {
@@ -105,11 +124,7 @@ export class lunchList extends Component<launchesProps> {
                 </div>
                 <nav aria-label="Page navigation example d-flex justify-content-center">
                     <ul className="pagination">
-                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                        <li className="page-item"><a className="page-link" href="#">1</a></li>
-                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                        <li className="page-item"><a className="page-link" href="#">3</a></li>
-                        <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                        {renderPageNumbers}
                     </ul>
                 </nav>
             </div>
