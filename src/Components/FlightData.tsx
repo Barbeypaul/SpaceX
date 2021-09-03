@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { prototype } from 'stream';
 import SpaceXLogo from './iconSpaceX'
 type launchesProps = {
     launches: any;
     key: string;
-
+    lengthFlight?: number;
+    pourcent?: number;
 };
 export class flightData extends Component<launchesProps> {
     render() {
@@ -13,27 +13,25 @@ export class flightData extends Component<launchesProps> {
         const arrayLaunch = []
         Object.keys(objectLunches).map(keylaunches => {
             const launch_success = objectLunches[keylaunches].launch_success
-            if (launch_success == true) {
+            if (launch_success === true) {
                 arrayLaunch.push(launch_success)
             }
         })
         const pourcent = arrayLaunch.length * 100 / lengthFlight
-        console.log(lengthFlight);
-        console.log(arrayLaunch.length);
-        console.log(pourcent);
         return (
             <div>
-                <div className="row col-md-6">
-                    <div className="col">
+                <div className="row col-12">
+                    <div className="col-md-2">
                         <SpaceXLogo></SpaceXLogo>
                     </div>
-                    <div className="card bg-dark col m-1">
+                    <div className="card bg-dark col-md-2 m-1">
                         <div className="card-body text-start">
-                            <p className="text-light">Nb de lancements : {lengthFlight}</p>
-                            <p className="text-light">Taux de réussite : {Math.trunc(pourcent)} %</p>
+                            <p className="text-light">Nb de lancements :{lengthFlight === 0 ? <div>Load</div> : <div>{lengthFlight}</div>} </p>
+                            <p className="text-light">Nb de lancements : {lengthFlight === NaN ? <div>Load</div> : <div>{Math.trunc(pourcent)}</div>}</p>
+                            <p className="text-light"> </p>
                         </div>
                     </div>
-                    <div className="card bg-dark col m-1">
+                    <div className="card bg-dark col-md-2 m-1">
                         <div className="card-body text-start">
 
                         </div>

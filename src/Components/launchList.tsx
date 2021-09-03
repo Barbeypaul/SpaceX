@@ -2,22 +2,58 @@ import React, { Component } from 'react'
 type launchesProps = {
     launches: any;
     key: string;
+    search?: string;
+
 };
 export class lunchList extends Component<launchesProps> {
+    state = {
+        search: '',
+        success: null,
+    }
+    handleChange = (event: any) => {
+        const value = event.target.value
+        this.setState({
+            search: value
+        })
+        console.log(this.state.search);
+
+    }
+    handleChangeSuccess = (event: any) => {
+        const value = event.target.value
+        this.setState({
+            success: value
+        })
+        console.log(this.state.success);
+    }
     render() {
         const launches = this.props.launches
-        console.log(launches);
+
         return (
             <div>
-                <div className="overflow-auto launch-scroll col-md-6">
-                    {Object.keys(launches).map(keylaunches => {
+                <div className="row col-md-6">
+                    <div className="input-group col">
+                        <div className="form-outline m-1">
+                            <input onChange={this.handleChange} value={this.state.search} type="search" id="form1" className="shadow form-control border border-white" />
+                            <label className="form-label text-dark" >mission_name</label>
+                        </div>
+                        <div className="btn-group btn-group-sm m-1 shadow" role="group" aria-label="Basic example">
+                            <button onClick={this.handleChangeSuccess} type="button" value="" className="btn btn-light">Default</button>
+                            <button onClick={this.handleChangeSuccess} type="button" value="true" className="btn btn-light">True</button>
+                            <button onClick={this.handleChangeSuccess} type="button" value="false" className="btn btn-light">False</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    {Object.keys(launches).filter((keylaunches) => {
+                        return launches[keylaunches].mission_name.toLocaleLowerCase().includes(this.state.search.toLocaleLowerCase())
+                        // Boolean(launches[keylaunches].launch_success.includes(this.state.success))
+                    }).map(keylaunches => {
                         const mission_name = launches[keylaunches].mission_name
                         const launch_success = launches[keylaunches].launch_success
                         const launch_date_local = launches[keylaunches].launch_date_local
                         const details = launches[keylaunches].details
                         const site_name = launches[keylaunches].launch_site.site_name
                         const rocket_name = launches[keylaunches].rocket.rocket_name
-
                         return (
                             <div>
                                 <div key={keylaunches} className="card bg-dark mt-1">
@@ -67,6 +103,15 @@ export class lunchList extends Component<launchesProps> {
                     })
                     }
                 </div>
+                <nav aria-label="Page navigation example d-flex justify-content-center">
+                    <ul className="pagination">
+                        <li className="page-item"><a className="page-link" href="#">Previous</a></li>
+                        <li className="page-item"><a className="page-link" href="#">1</a></li>
+                        <li className="page-item"><a className="page-link" href="#">2</a></li>
+                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                        <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
             </div>
         )
     }
