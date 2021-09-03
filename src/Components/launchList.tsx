@@ -6,16 +6,20 @@ type launchesProps = {
 
 };
 export class lunchList extends Component<launchesProps> {
+
     state = {
         search: '',
         success: null,
         currentPage: 1,
-        todosPerPage: 20,
+        todosPerPage: 10,
     }
+
+
     handleChange = (event: any) => {
         const value = event.target.value
         this.setState({
-            search: value
+            search: value,
+            currentPage: 1
         })
         console.log(this.state.search);
     }
@@ -26,11 +30,11 @@ export class lunchList extends Component<launchesProps> {
         })
         console.log(this.state.success);
     }
-    handleClickPagination(event: any) {
-        // this.setState({
-        //     currentPage: Number(event.target.key)
-        // });
-        console.log(event.target.key);
+    handleClickPagination = (event: any) => {
+        this.setState({
+            currentPage: Number(event.currentTarget.dataset.id)
+        });
+        console.log(this.state.currentPage);
     }
     render() {
         const launches = this.props.launches
@@ -44,7 +48,7 @@ export class lunchList extends Component<launchesProps> {
         const renderPageNumbers = pageNumbers.map(numberPage => {
             console.log(numberPage);
             return (
-                <li key={numberPage} value={numberPage} onClick={this.handleClickPagination} className="page-item"><a className="page-link" href="#">{numberPage}</a></li>
+                <li key={numberPage} data-id={numberPage} onClick={this.handleClickPagination} className="page-item"><a className="page-link">{numberPage}</a></li>
             );
         });
         return (
@@ -63,10 +67,10 @@ export class lunchList extends Component<launchesProps> {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    {Object.keys(launches).slice(indexOfFirstTodo, indexOfLastTodo).filter((keylaunches) => {
+                    {Object.keys(launches).filter((keylaunches) => {
                         return launches[keylaunches].mission_name.toLocaleLowerCase().includes(this.state.search.toLocaleLowerCase())
                         // Boolean(launches[keylaunches].launch_success.includes(this.state.success))
-                    }).map(keylaunches => {
+                    }).slice(indexOfFirstTodo, indexOfLastTodo).map(keylaunches => {
                         const mission_name = launches[keylaunches].mission_name
                         const launch_success = launches[keylaunches].launch_success
                         const launch_date_local = launches[keylaunches].launch_date_local
@@ -122,11 +126,15 @@ export class lunchList extends Component<launchesProps> {
                     })
                     }
                 </div>
-                <nav aria-label="Page navigation example d-flex justify-content-center">
-                    <ul className="pagination">
-                        {renderPageNumbers}
-                    </ul>
-                </nav>
+                <div className="row col-md-6">
+                    <nav aria-label="Page navigation example ">
+                        <ul className="pagination d-flex justify-content-center">
+                            {/* <li data-id="+1" onClick={this.handleClickPagination} className="page-item"><a className="page-link">Previous</a></li> */}
+                            {renderPageNumbers}
+                            {/* <li  data-id="-1" onClick={this.handleClickPagination} className="page-item"><a className="page-link">Next</a></li> */}
+                        </ul>
+                    </nav>
+                </div>
             </div>
         )
     }

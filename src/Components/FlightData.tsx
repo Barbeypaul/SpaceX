@@ -26,8 +26,8 @@ export class flightData extends Component<launchesProps> {
                     </div>
                     <div className="card bg-dark col-md-2 m-1">
                         <div className="card-body text-start">
-                            <p className="text-light">Nb de lancements :{lengthFlight === 0 ? <div>Load</div> : <div>{lengthFlight}</div>} </p>
-                            <p className="text-light">Nb de lancements : {lengthFlight === NaN ? <div>Load</div> : <div>{Math.trunc(pourcent)}</div>}</p>
+                            <p className="text-light">NB of launches :{lengthFlight === 0 ? <div>Load</div> : <div>{lengthFlight}</div>} </p>
+                            <p className="text-light">Success rate : {lengthFlight === NaN ? <div>Load</div> : <div>{Math.trunc(pourcent)} %</div>}</p>
                             <p className="text-light"> </p>
                         </div>
                     </div>
