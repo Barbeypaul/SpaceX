@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
-import SpaceXLogo from './iconSpaceX'
+import SpaceXLogo from '../iconSpaceX'
+import Graph from './Graph'
+
 type launchesProps = {
-    launches?: any;
-    roadster?: any;
-    key: string;
-    lengthFlight?: number;
-    pourcent?: number;
+    roadster: {
+        earth_distance_km?: number
+    } | any
+    launches: {
+        launch_success: boolean
+    } | any
+
+    ArrayTimeLunches?: Object;
 };
 export class flightData extends Component<launchesProps> {
     render() {
@@ -18,19 +23,24 @@ export class flightData extends Component<launchesProps> {
                 arrayLaunch.push(launch_success)
             }
         })
-        const pourcent = arrayLaunch.length * 100 / lengthFlight
-        const earth_distance_km = this.props.roadster.earth_distance_km
+        const pourcent = Math.trunc(arrayLaunch.length * 100 / lengthFlight)
+        const distance = Math.trunc(this.props.roadster.earth_distance_km)
         return (
             <div>
                 <div className="row col-12">
                     <div className="col-md-2">
                         <SpaceXLogo></SpaceXLogo>
                     </div>
-                    <div className="card bg-dark col-md-4 m-1">
+                    <div className="card bg-dark col-md-3 m-1">
                         <div className="card-body text-start">
                             <p className="text-light row">Number of launches :{lengthFlight} </p>
-                            <p className="text-light row">Success rate : {Math.trunc(pourcent)} %</p>
-                            <p className="text-light row">Roadster earth distance: {Math.trunc(earth_distance_km)} Km</p>
+                            <p className="text-light row">Success rate : {pourcent} %</p>
+                            <p className="text-light row">Roadster earth distance: {distance}  Km</p>
+                        </div>
+                    </div>
+                    <div className="card bg-dark col-md-3 m-1">
+                        <div className="card-body text-start">
+                            <Graph objectLunches={objectLunches}></Graph>
                         </div>
                     </div>
                 </div >

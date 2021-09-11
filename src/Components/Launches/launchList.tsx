@@ -1,15 +1,29 @@
 import React, { Component } from 'react'
 type launchesProps = {
-    launches: any;
-    key: string;
-    search?: string;
-
+    launches: {
+        [keylaunches: string]: {
+            mission_name: string,
+            launch_success: boolean,
+            launch_date_local: string,
+            details: string,
+            launch_site: {
+                site_name: string,
+            },
+            rocket: {
+                rocket_name: string,
+            },
+            links: {
+                mission_patch: string,
+                flickr_images: [key: string],
+            }
+        }
+    } | any
 };
+
 export class lunchList extends Component<launchesProps> {
 
     state = {
         search: '',
-        success: null,
         currentPage: 1,
         todosPerPage: 10,
     }
@@ -22,13 +36,6 @@ export class lunchList extends Component<launchesProps> {
             currentPage: 1
         })
         console.log(this.state.search);
-    }
-    handleChangeSuccess = (event: any) => {
-        const value = event.target.value
-        this.setState({
-            success: value
-        })
-        console.log(this.state.success);
     }
     handleClickPagination = (event: any) => {
         this.setState({
@@ -52,16 +59,13 @@ export class lunchList extends Component<launchesProps> {
         });
         return (
             <div>
+
                 <div className="row col-md-6">
+                    <p className="m-1 text-dark">All launches</p>
                     <div className="input-group col">
                         <div className="form-outline m-1">
                             <input onChange={this.handleChange} value={this.state.search} type="search" id="form1" className="shadow form-control border border-white" />
                             <label className="form-label text-dark" >mission_name</label>
-                        </div>
-                        <div className="btn-group btn-group-sm m-1 shadow" role="group" aria-label="Basic example">
-                            <button onClick={this.handleChangeSuccess} type="button" value="" className="btn btn-light">Default</button>
-                            <button onClick={this.handleChangeSuccess} type="button" value="true" className="btn btn-light">True</button>
-                            <button onClick={this.handleChangeSuccess} type="button" value="false" className="btn btn-light">False</button>
                         </div>
                     </div>
                 </div>

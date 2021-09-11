@@ -1,13 +1,19 @@
+import { type } from 'os'
 import React, { Component } from 'react'
 // Components
-import FlightData from './Components/FlightData'
-import LunchList from './Components/launchList'
-export class App extends Component {
-  state = {
+import FlightData from './Components/Data/FlightData'
+import LunchList from './Components/Launches/launchList'
+
+type launchesState = {
+  launches?: object
+  roadster?: object
+  rockets?: object
+};
+export class App extends Component<launchesState> {
+  state: launchesState = {
     launches: [],
     roadster: [],
-    name: "paul",
-    age: 21
+    rockets: [],
   }
   componentDidMount() {
     fetch("https://api.spacexdata.com/v3/launches")
@@ -19,6 +25,11 @@ export class App extends Component {
       .then((response) => response.json())
       .then(roadster => this.setState({
         roadster: roadster
+      }))
+    fetch("https://api.spacexdata.com/v3/rockets")
+      .then((response) => response.json())
+      .then(rockets => this.setState({
+        roadster: rockets
       }))
   }
   render() {
